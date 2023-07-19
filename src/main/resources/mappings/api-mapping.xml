@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OPENAPI">
+	  
+ <insert id="INSERT" parameterType="api"  >
+ 
+   insert into COMPANY2(idx, rdnmadr,logitude, entrprsNm, rprsntvNm,latitude, mainGoods    )
+   values (COMPANY_idx.nextval, #{rdnmadr},#{logitude}, #{entrprsNm}, #{rprsntvNm},#{latitude}, #{mainGoods} )
+    
+ </insert>
+ 
+ <insert id="EvINSERT" parameterType="ev"  >
+ 
+   insert into EvSearch(idx, csNm, addr, cpNm, cpStat  )
+   values (COMPANY_idx.nextval,#{csNm}, #{addr},#{cpNm}, #{cpStat} )
+    
+ </insert>
+ 
+ <select id="SELECT"  parameterType="api"
+                                    resultType="api" >
+   select  *  from COMPANY2
+ 
+ </select>
+  
+ <select id="EvSELECT"  parameterType="ev"
+                                    resultType="ev" >
+   select  *  from EvSearch
+ 
+ </select>
+ 
+  <select id="SELECTONE"  parameterType="api"
+                                    resultType="api" >
+   select  *  from COMPANY2 where idx = #{idx}
+ 
+ </select>
+ 
+  <select id="EvSELECTONE"  parameterType="ev"
+                                    resultType="ev" >
+   select  *  from EvSearch where idx = #{idx}
+ 
+ </select>
+</mapper>	

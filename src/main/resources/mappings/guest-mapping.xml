@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="GUESTBOOK">
+	  
+ <insert id="INSERT" parameterType="guestbook"  >
+ insert into guestbook(idx, title, writer) values ((select nvl(max(idx),0)+1 idx from guestbook), #{title},#{writer})
+ </insert>
+
+ <select id="SELECT" resultType="guestbook" >
+     <![CDATA[ select rownum, q.* from ((select rownum as rnum, idx, title, writer, date_for as dateStr from guestbook) k where rownum <= 10) q where rownum >1  ]]>
+ 
+ </select>
+ 
+ <select id="COUNT">
+ select count(*) from guestbook
+ </select>
+  
+</mapper>	

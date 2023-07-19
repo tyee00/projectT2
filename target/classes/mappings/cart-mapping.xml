@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CART">
+	  
+ <insert id="INSERT" parameterType="cart"  >
+ insert into CartTBL(cartId, custNo, productId, amount) values(seq_CartTBL.nextval, #{custNo}, #{productId}, #{amount})
+ </insert>
+<select id="SELECTALL" resultType="cart">
+select  cartId, custNo, c.productId as productId, productName, productPrice, productImg as productImgStr, amount from productTBL p join CartTBL c on p.productId = c.productId where c.custNo = #{custNo}
+</select>
+<delete id="DELETE">
+delete from CartTBL where cartId = #{cartId}
+</delete>
+<delete id="DELETEALL">
+delete from CartTBL where custNo = #{custNo}
+</delete>
+<update id="UPDATE">
+ update CartTBL set amount = #{amount}  where cartId = #{cartId}
+</update>
+<insert id="ORDERJUMON">
+insert into orderjumon(idx, custNo, cartId, productId, productName, amount, money_idx) values(seq_orderjumon.nextval, #{custNo}, #{cartId}, #{productId}, #{productName}, #{amount}, seq_ordermoney.currval)
+</insert>
+<insert id="ORDERMONEY">
+insert into ordermoney(idx, custNo, baesongbi, totalPrice) values (seq_ordermoney.nextval, #{custNo}, #{baesongbi}, #{totalPrice})
+</insert>
+<select id="SELECTONEORDER" resultType="orderone">
+select j.idx as idx, money_idx, phone,custname, address,j.custNo as custNo, cartId, productId, productName, amount, j.getDate as getDate, baesongbi, totalPrice 
+ 
+from ordermoney m 
+join ORDERJUMON j
+on m.idx  = j.money_idx
+join MEMBER_TBL_02 t
+on m.CUSTNO = t.CUSTNO
+where m.idx  = #{idx}
+</select>
+<select id="SELECTORDERMONEY" resultType="ordermoney">
+select * from ordermoney
+</select>
+</mapper>	
